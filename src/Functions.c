@@ -9,7 +9,7 @@ KAPC_STATE AttachProcess(HANDLE ProcessId) // Switch to UM Address Space
 	return apc;
 }
 
-NTSTATUS WriteMemory(PVOID Destination, PVOID Buffer, SIZE_T BufferSize, ULONG fProtect)
+NTSTATUS WriteMemory(PVOID Destination, PVOID Buffer, SIZE_T BufferSize, ULONG fProtect) // Write memory
 {
 
 	PMDL mdl = IoAllocateMdl(Destination, BufferSize, FALSE, FALSE, NULL); // Allocate Memory Descriptor
