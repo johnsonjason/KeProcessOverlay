@@ -21,7 +21,6 @@ NTSTATUS WriteMemory(PVOID Destination, PVOID Buffer, SIZE_T BufferSize, ULONG f
 	// Many MDL functions must be enclosed in a try/except statement
 	__try
 	{
-		MmInitializeMdl(mdl, Destination, BufferSize); 
 		MmProbeAndLockPages(mdl, ProcessorMode, IoReadAccess); 
 		Destination = MmGetSystemAddressForMdlSafe(mdl, HighPagePriority);
 
