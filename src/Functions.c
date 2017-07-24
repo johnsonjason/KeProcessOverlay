@@ -1,5 +1,9 @@
 // By jasonfish4
 
+#include <ntifs.h>
+#include <ntdef.h>
+#include <wdf.h>
+
 KAPC_STATE AttachProcess(HANDLE ProcessId) // Switch to UM Address Space
 {
 	KAPC_STATE apc;
