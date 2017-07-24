@@ -3,6 +3,7 @@
 #include <ntifs.h>
 #include <ntdef.h>
 #include <wdf.h>
+#include "Functions.h"
 
 KAPC_STATE AttachProcess(HANDLE ProcessId) // Switch to UM Address Space
 {
