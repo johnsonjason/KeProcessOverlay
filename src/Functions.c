@@ -13,14 +13,15 @@ KAPC_STATE AttachProcess(HANDLE ProcessId) // Switch to UM Address Space
 	return apc;
 }
 
-NTSTATUS WriteMemory(PVOID Destination, PVOID Buffer, SIZE_T BufferSize, ULONG fProtect) // Write memory
+//Use UserMode as KPROCESSOR_MODE when attaching to a usermode process
+NTSTATUS WriteMemory(PVOID Destination, PVOID Buffer, SIZE_T BufferSize, ULONG fProtect, KPROCESSOR_MODE ProcessorMode) // Write memory
 {
 
 	PMDL mdl = IoAllocateMdl(Destination, BufferSize, FALSE, FALSE, NULL); // Allocate Memory Descriptor
 	__try
 	{
 		MmInitializeMdl(mdl, Destination, BufferSize); 
-		MmProbeAndLockPages(mdl, UserMode, IoReadAccess); 
+		MmProbeAndLockPages(mdl, ProcessorMode, IoReadAccess); 
 		Destination = MmGetSystemAddressForMdlSafe(mdl, HighPagePriority);
 
 		if (Destination != NULL)
