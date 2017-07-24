@@ -38,11 +38,11 @@ NTSTATUS WriteMemory(PVOID Destination, PVOID Buffer, SIZE_T BufferSize, ULONG f
 
 NTSTATUS ReadMemory(PVOID Buffer, PVOID MemoryToRead, SIZE_T Size)
 {
-	RtlCopyMemory(MemoryToRead, Buffer, Size);
+	RtlCopyMemory(MemoryToRead, Buffer, Size); // Copy from src to dest
 }
 
 
 void DetachProcess(KAPC_STATE* apc) // Switch back to KM Address Space
 {
-	KeUnstackDetachProcess(&apc);
+	KeUnstackDetachProcess(&apc); // Detach thread from address space
 }
