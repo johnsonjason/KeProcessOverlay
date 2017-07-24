@@ -16,7 +16,7 @@ NTSTATUS DriverEntry(_In_ PDRIVER_OBJECT  DriverObject, _In_ PUNICODE_STRING Reg
 	DWORD32 Buffer = 1234;
   
 	KAPC_STATE apc = AttachProcess(ProcessId);
-  status = WriteMemory((PVOID)0x00400000, &Buffer, sizeof(DWORD32), PAGE_READONLY, UserMode);
+ 	 status = WriteMemory((PVOID)0x00400000, &Buffer, sizeof(DWORD32), PAGE_READONLY, UserMode);
 	DetachProcess(&apc);
   
 	return status;
