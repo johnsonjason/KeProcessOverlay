@@ -24,12 +24,10 @@ NTSTATUS WriteMemory(PVOID Destination, PVOID Buffer, SIZE_T BufferSize, ULONG f
 		MmProbeAndLockPages(mdl, ProcessorMode, IoReadAccess); 
 		Destination = MmGetSystemAddressForMdlSafe(mdl, HighPagePriority);
 
-		if (Destination != NULL)
-		{
-			MmProtectMdlSystemAddress(mdl, PAGE_EXECUTE_READWRITE); // Set the page rights to R/W/X
-			RtlCopyMemory(Destination, Buffer, sizeof(DWORD32)); // Write Memory
-			MmProtectMdlSystemAddress(mdl, fProtect); // Set back to old page rights
-		}
+		MmProtectMdlSystemAddress(mdl, PAGE_EXECUTE_READWRITE); // Set the page rights to R/W/X
+		RtlCopyMemory(Destination, Buffer, sizeof(DWORD32)); // Write Memory
+		MmProtectMdlSystemAddress(mdl, fProtect); // Set back to old page rights
+		
 		MmUnmapLockedPages(Destination, mdl);
 		MmUnlockPages(mdl);
 		IoFreeMdl(mdl); // free MDL
@@ -38,6 +36,7 @@ NTSTATUS WriteMemory(PVOID Destination, PVOID Buffer, SIZE_T BufferSize, ULONG f
 	{
 		return 1;
 	}
+	
 	return 0;
 }
 
