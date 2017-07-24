@@ -18,6 +18,7 @@ NTSTATUS WriteMemory(PVOID Destination, PVOID Buffer, SIZE_T BufferSize, ULONG f
 {
 
 	PMDL mdl = IoAllocateMdl(Destination, BufferSize, FALSE, FALSE, NULL); // Allocate Memory Descriptor
+	// Many MDL functions must be enclosed in a try/except statement
 	__try
 	{
 		MmInitializeMdl(mdl, Destination, BufferSize); 
@@ -40,6 +41,7 @@ NTSTATUS WriteMemory(PVOID Destination, PVOID Buffer, SIZE_T BufferSize, ULONG f
 	return 0;
 }
 
+// Read Memory
 NTSTATUS ReadMemory(PVOID Buffer, PVOID MemoryToRead, SIZE_T Size)
 {
 	RtlCopyMemory(MemoryToRead, Buffer, Size); // Copy from src to dest
