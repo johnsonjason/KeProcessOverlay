@@ -1,6 +1,8 @@
 // This function only works in the context of KeStackAttachProcess with the usermode kprocessor mode
 
-PVOID GetSignatureBase(HANDLE ProcessId, DWORD64 BaseStart, DWORD64 BaseEnd, Signature ScanSignature, ULONG PageProtect, SIZE_T RegionSize, ULONG Type)
+PVOID GetSignatureBase(HANDLE ProcessId, DWORD64 BaseStart, 
+		       DWORD64 BaseEnd, Signature ScanSignature, 
+		       ULONG PageProtect, SIZE_T RegionSize, ULONG Type)
 {
 	DWORD64 cmp64;
 	MEMORY_BASIC_INFORMATION mem_basic_info;
@@ -9,15 +11,20 @@ PVOID GetSignatureBase(HANDLE ProcessId, DWORD64 BaseStart, DWORD64 BaseEnd, Sig
 	
   	PsLookupProcessByProcessId(ProcessId, &process);
   // get a process handle from EPROCESS
-	ObReferenceObjectByHandle(process, PROCESS_ALL_ACCESS, PsProcessType, UserMode, (PVOID *)&pe_process, NULL);
+	ObReferenceObjectByHandle(process, PROCESS_ALL_ACCESS, 
+				  PsProcessType, UserMode, 
+				  (PVOID *)&pe_process, NULL);
 	size_t ReturnLength = 0;
   
   // loop til base start value reaches the base end value
 	while (BaseStart < BaseEnd)
 	{
     // Query the memory region with the specified filters
-		ZwQueryVirtualMemory(process, (PVOID)BaseStart, MemoryBasicInformation, &mem_basic_info, sizeof(mem_basic_info), &ReturnLength);
-		if (mem_basic_info.Protect == PageProtect && mem_basic_info.RegionSize == RegionSize && mem_basic_info.Type == Type)
+		ZwQueryVirtualMemory(process, (PVOID)BaseStart, 
+				     MemoryBasicInformation, &mem_basic_info, 
+				     sizeof(mem_basic_info), &ReturnLength);
+		if (mem_basic_info.Protect == PageProtect && 
+		    mem_basic_info.RegionSize == RegionSize && mem_basic_info.Type == Type)
 		{
 			for (size_t BaseIterator = (size_t)mem_basic_info.BaseAddress;
 			BaseIterator < ((DWORD64)mem_basic_info.BaseAddress + mem_basic_info.RegionSize); BaseIterator += 8)
