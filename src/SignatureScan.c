@@ -11,10 +11,13 @@ PVOID GetSignatureBase(HANDLE ProcessId, DWORD64 BaseStart,
 	HANDLE process;
 	
   	PsLookupProcessByProcessId(ProcessId, &peprocess);
+	
   // get a process handle from EPROCESS
+	
 	ObReferenceObjectByHandle(process, PROCESS_ALL_ACCESS, 
 				  PsProcessType, UserMode, 
 				  (PVOID *)&peprocess, NULL);
+	
 	size_t ReturnLength = 0;
   
   // loop til base start value reaches the base end value
@@ -24,13 +27,16 @@ PVOID GetSignatureBase(HANDLE ProcessId, DWORD64 BaseStart,
 		ZwQueryVirtualMemory(process, (PVOID)BaseStart, 
 				     MemoryBasicInformation, &mem_basic_info, 
 				     sizeof(mem_basic_info), &ReturnLength);
+		
 		if (mem_basic_info.Protect == PageProtect && 
 		    mem_basic_info.RegionSize == RegionSize && mem_basic_info.Type == Type)
 		{
 			for (size_t BaseIterator = (size_t)mem_basic_info.BaseAddress;
 			BaseIterator < ((DWORD64)mem_basic_info.BaseAddress + mem_basic_info.RegionSize); BaseIterator += 8)
 			{
+				
         // copy 64bit value into cmp64 buffer and then compare it with val1, then repeat option offsetted + 8 with val2
+				
 				RtlCopyMemory(&cmp64, (PVOID)BaseIterator, sizeof(DWORD64));
 				if (cmp64 == ScanSignature.val1)
 				{
@@ -38,6 +44,7 @@ PVOID GetSignatureBase(HANDLE ProcessId, DWORD64 BaseStart,
 					if (cmp64 == ScanSignature.val2)
 						return (PVOID)BaseIterator; // return the address with the matching signature
 				}
+				
 			}
 		}
 		BaseStart += mem_basic_info.RegionSize;
