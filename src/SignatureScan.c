@@ -7,13 +7,14 @@ PVOID GetSignatureBase(HANDLE ProcessId, DWORD64 BaseStart,
 	DWORD64 cmp64;
 	MEMORY_BASIC_INFORMATION mem_basic_info;
 	POBJECT_TYPE PsProcessType;
+	PEPROCESS peprocess;
 	HANDLE process;
 	
-  	PsLookupProcessByProcessId(ProcessId, &process);
+  	PsLookupProcessByProcessId(ProcessId, &peprocess);
   // get a process handle from EPROCESS
 	ObReferenceObjectByHandle(process, PROCESS_ALL_ACCESS, 
 				  PsProcessType, UserMode, 
-				  (PVOID *)&pe_process, NULL);
+				  (PVOID *)&peprocess, NULL);
 	size_t ReturnLength = 0;
   
   // loop til base start value reaches the base end value
