@@ -1,12 +1,13 @@
 // This function only works in the context of KeStackAttachProcess with the usermode kprocessor mode
 
-PVOID GetSignatureBase(PEPROCESS pe_process, DWORD64 BaseStart, DWORD64 BaseEnd, Signature ScanSignature, ULONG PageProtect, SIZE_T RegionSize, ULONG Type)
+PVOID GetSignatureBase(HANDLE ProcessId, DWORD64 BaseStart, DWORD64 BaseEnd, Signature ScanSignature, ULONG PageProtect, SIZE_T RegionSize, ULONG Type)
 {
 	DWORD64 cmp64;
 	MEMORY_BASIC_INFORMATION mem_basic_info;
-	HANDLE process;
 	POBJECT_TYPE PsProcessType;
-  
+	HANDLE process;
+	
+  	PsLookupProcessByProcessId(ProcessId, &process);
   // get a process handle from EPROCESS
 	ObReferenceObjectByHandle(process, PROCESS_ALL_ACCESS, PsProcessType, UserMode, (PVOID *)&pe_process, NULL);
 	size_t ReturnLength = 0;
