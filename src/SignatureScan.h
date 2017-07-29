@@ -1,6 +1,11 @@
 #ifndef SIGNATURESCAN
 #define SIGNATURESCAN
 
+#include <ntifs.h>
+#include <ntdef.h>
+#include <wdf.h>
+
+
 typedef struct _Signature
 {
 	DWORD64 val1;
