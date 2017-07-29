@@ -1,4 +1,5 @@
 // This function only works in the context of KeStackAttachProcess with the usermode kprocessor mode
+#include "SignatureScan.h"
 
 PVOID GetSignatureBase(HANDLE ProcessId, DWORD64 BaseStart, 
 		       DWORD64 BaseEnd, Signature ScanSignature, 
