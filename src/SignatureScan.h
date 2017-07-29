@@ -14,6 +14,6 @@ typedef struct _Signature
 
 PVOID GetSignatureBase(HANDLE ProcessId, DWORD64 BaseStart, 
 		       DWORD64 BaseEnd, Signature ScanSignature, 
-		       ULONG PageProtect, SIZE_T RegionSize, ULONG Type)
+		       ULONG PageProtect, SIZE_T RegionSize, ULONG Type);
 
 #endif
