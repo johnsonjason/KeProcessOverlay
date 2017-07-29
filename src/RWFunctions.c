@@ -1,4 +1,5 @@
 // By jasonfish4
+#include "RWFunctions.h"
 
 KAPC_STATE AttachProcess(HANDLE ProcessId) // Switch to UM Address Space
 {
