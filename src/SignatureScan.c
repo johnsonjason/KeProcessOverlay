@@ -7,17 +7,19 @@ PVOID GetSignatureBase(HANDLE ProcessId, DWORD64 BaseStart,
 {
 	DWORD64 cmp64;
 	MEMORY_BASIC_INFORMATION mem_basic_info;
-	POBJECT_TYPE PsProcessType;
+	POBJECT_TYPE PsProcessType = NULL;
 	PEPROCESS peprocess;
-	HANDLE process;
 	
   	PsLookupProcessByProcessId(ProcessId, &peprocess);
-	
-  // get a process handle from EPROCESS
-	
-	ObReferenceObjectByHandle(process, PROCESS_ALL_ACCESS, 
-				  PsProcessType, UserMode, 
-				  (PVOID *)&peprocess, NULL);
+
+	HANDLE process = NULL;
+	OBJECT_ATTRIBUTES obj_attr;
+	CLIENT_ID cid;
+
+	cid.UniqueProcess = ProcessId; //PsGetCurrentProcessId();
+	cid.UniqueThread = NULL; //(HANDLE)0;
+	InitializeObjectAttributes(&obj_attr, NULL, 0, NULL, NULL);
+	ZwOpenProcess(&process, PROCESS_ALL_ACCESS, &obj_attr, &cid);
 	
 	size_t ReturnLength = 0;
   
